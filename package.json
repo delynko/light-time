@@ -4,7 +4,12 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "start": "node app",
     "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": ["heroku", "example"],
+  "engines": {
+    "node": "8.12.0"
   },
   "author": "",
   "license": "ISC",

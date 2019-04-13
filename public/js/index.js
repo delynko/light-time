@@ -71,12 +71,13 @@ const stop = () => {
 
 const trip = () => {
     tripStartTime = new Date();
+    tripDOW = new Date().getDay();
     navigator.geolocation.getCurrentPosition(function(position, options) {
         tripStartCoords = [position.coords.latitude, position.coords.longitude]
     });
     let d = new Date().getTime();
     setTimeout(() => {
-        socket.emit('new-trip', [d, tripStartCoords, tripStartTime]);
+        socket.emit('new-trip', [d, tripStartCoords, tripStartTime, tripDOW]);
     }, 5000);
 }
 

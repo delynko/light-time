@@ -28,6 +28,7 @@ const lightSchema = new Schema({
 const tripSchema = new Schema({
     type: String,
     tripid: Number,
+    dow: Number,
     duration: Number,
     startCoords: Array,
     endCoords: Array
@@ -55,11 +56,13 @@ io.on('connection', (socket) => {
     let tripStartTime;
     let tripStartCoords;
     let tripEndCoords;
+    let tripDOW;
 
     socket.on('new-trip', (d) => {
         tripId = d[0]
         tripStartCoords = d[1];
         tripStartTime = d[2];
+        tripDOW = d[3];
     });
 
     socket.on('lightData', (stopData) => {
@@ -83,6 +86,7 @@ io.on('connection', (socket) => {
         let trip = new tripData({
             type: 'trip',
             tripid: tripId,
+            dow: tripDOW,
             duration: tripDur,
             startCoords: tripStartCoords,
             endCoords: tripEndCoords

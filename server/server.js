@@ -16,6 +16,7 @@ mongoose.connect(process.env.MLAB_URI, {useNewUrlParser: true});
 
 const Schema = mongoose.Schema;
 const lightSchema = new Schema({
+    type: String,
     tripid: Number,
     date: String,
     direction: String,
@@ -24,9 +25,19 @@ const lightSchema = new Schema({
     longitude: Number,
 });
 
+const tripSchema = new Schema({
+    type: String,
+    tripid: Number,
+    duration: Number,
+    startCoords: Array,
+    endCoords: Array
+});
+
 const lightTime = mongoose.model('lightTime', lightSchema);
+const tripData = mongoose.model('tripData', tripSchema);
 
 module.exports = lightTime;
+module.exports = tripData;
 
 app.use(express.static(path.join(__dirname, '../public')));
 
@@ -41,13 +52,19 @@ io.on('connection', (socket) => {
     console.log('connected');
 
     let tripId;
+    let tripStartTime;
+    let tripStartCoords;
+    let tripEndCoords;
 
     socket.on('new-trip', (d) => {
-        tripId = d;
+        tripId = d[0]
+        tripStartCoords = d[1];
+        tripStartTime = d[2];
     });
 
     socket.on('lightData', (stopData) => {
         let light = new lightTime({
+            type: 'stop',
             tripid: tripId,
             date: stopData.date,
             direction: stopData.direction,
@@ -59,6 +76,21 @@ io.on('connection', (socket) => {
             if (err) throw err;
         });
     });
+
+    socket.on('end-trip', (endData) => {
+        tripEndCoords = endData[0];
+        tripDur = endData[1]
+        let trip = new tripData({
+            type: 'trip',
+            tripid: tripId,
+            duration: tripDur,
+            startCoords: tripStartCoords,
+            endCoords: tripEndCoords
+        });
+        trip.save((err) => {
+            if (err) throw err;
+        });
+    })
 });
 
 server.listen(port, () => {

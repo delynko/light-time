@@ -7,6 +7,10 @@ let dateTime;
 let latitude;
 let longitude;
 let direction;
+let tripStartTime;
+let tripEndTime;
+let tripStartCoords;
+let tripEndCoords;
 
 const options = {
     enableHighAccuracy: true
@@ -34,7 +38,11 @@ $('#stop').click((e) => {
 
 $("#trip").click((e) => {
     trip()
-})
+});
+
+$("#end-trip").click((e) => {
+    endTrip();
+});
 
 const getData = (e) => {
     direction = e.target.id;
@@ -62,6 +70,23 @@ const stop = () => {
 }
 
 const trip = () => {
+    tripStartTime = new Date();
+    navigator.geolocation.getCurrentPosition(function(position, options) {
+        tripStartCoords = [position.coords.latitude, position.coords.longitude]
+    });
     let d = new Date().getTime();
-    socket.emit('new-trip', d);
+    setTimeout(() => {
+        socket.emit('new-trip', [d, tripStartCoords, tripStartTime]);
+    }, 5000);
+}
+
+const endTrip = () => {
+    tripEndTime = new Date();
+    tripDuration = (tripEndTime - tripStartTime) / 1000;
+    navigator.geolocation.getCurrentPosition(function(position, options) {
+        tripEndCoords = [position.coords.latitude, position.coords.longitude]
+    });
+    setTimeout(() => {
+        socket.emit('end-trip', [tripEndCoords, tripDuration]);
+    }, 5000);
 }

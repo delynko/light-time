@@ -16,6 +16,7 @@ mongoose.connect(process.env.MLAB_URI, {useNewUrlParser: true});
 
 const Schema = mongoose.Schema;
 const lightSchema = new Schema({
+    tripid: Number,
     date: String,
     direction: String,
     duration: Number,
@@ -39,9 +40,15 @@ app.get('/', (req, res) => {
 io.on('connection', (socket) => {
     console.log('connected');
 
+    let tripId;
+
+    socket.on('new-trip', (d) => {
+        tripId = d;
+    });
+
     socket.on('lightData', (stopData) => {
-        console.log(stopData);
         let light = new lightTime({
+            tripid: tripId,
             date: stopData.date,
             direction: stopData.direction,
             duration: stopData.duration,
@@ -50,7 +57,6 @@ io.on('connection', (socket) => {
         });
         light.save((err) => {
             if (err) throw err;
-            console.log('Data saved');
         });
     });
 });

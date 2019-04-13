@@ -30,6 +30,10 @@ $('#south').click((e) => {
 
 $('#stop').click((e) => {
     stop();
+});
+
+$("#trip").click((e) => {
+    trip()
 })
 
 const getData = (e) => {
@@ -40,7 +44,6 @@ const getData = (e) => {
         longitude = position.coords.longitude;
     });
     dateTime = new Date().toLocaleString("en-US", {timeZone: "America/Denver"});
-    console.log(e.target.id);
 }
 
 const stop = () => {
@@ -55,6 +58,10 @@ const stop = () => {
     }
     setTimeout(()=>{
         socket.emit('lightData', stopData);
-        console.log(stopData);
     }, 1000)
+}
+
+const trip = () => {
+    let d = new Date().getTime();
+    socket.emit('new-trip', d);
 }

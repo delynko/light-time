@@ -27,6 +27,7 @@ const lightSchema = new Schema({
 
 const tripSchema = new Schema({
     type: String,
+    date: String,
     tripid: Number,
     dow: Number,
     duration: Number,
@@ -85,6 +86,7 @@ io.on('connection', (socket) => {
         tripDur = endData[1]
         let trip = new tripData({
             type: 'trip',
+            date: tripStartTime,
             tripid: tripId,
             dow: tripDOW,
             duration: tripDur,

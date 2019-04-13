@@ -10,6 +10,11 @@ button {
     font-size: 100px
 }
 
+#north, #south, #east, #west, #stop {
+    height: 200px;
+    width: 200px;
+}
+
 .stop-butt {
     text-align: center;
     display: flex;

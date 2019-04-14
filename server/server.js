@@ -5,6 +5,7 @@ const http = require('http');
 const socketIO = require('socket.io');
 const hbs = require('hbs');
 const mongoose = require('mongoose');
+const curl = require('curl');
 
 const port = process.env.PORT || 3000;
 
@@ -41,6 +42,16 @@ const tripData = mongoose.model('tripData', tripSchema);
 module.exports = lightTime;
 module.exports = tripData;
 
+let allTripData;
+curl.get(`https://api.mlab.com/api/1/databases/traffic-light-time/collections/tripdatas?apiKey=${process.env.MLAB_API_KEY}`, (err, res, body) => {
+    allTripData = body;
+});
+
+let allLightData;
+curl.get(`https://api.mlab.com/api/1/databases/traffic-light-time/collections/lighttimes?apiKey=${process.env.MLAB_API_KEY}`, (err, res, body) => {
+    allLightData = body;
+});
+
 app.use(express.static(path.join(__dirname, '../public')));
 
 app.set("views", path.resolve(__dirname, "../views"));
@@ -48,6 +59,14 @@ app.set("view engine", "hbs");
 
 app.get('/', (req, res) => {
     res.render('index.hbs');
+});
+
+app.get('/data', (req, res) => {
+    res.send([allTripData, allLightData]);
+});
+
+app.get('/dashboard', (req, res) => {
+    res.render('dashboard.hbs');
 });
 
 io.on('connection', (socket) => {

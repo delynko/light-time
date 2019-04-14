@@ -21,3 +21,7 @@ button {
     align-items: center;
     justify-content: center;
 }
+
+#trip-id {
+    text-align: center;
+}

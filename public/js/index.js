@@ -76,6 +76,7 @@ const trip = () => {
         tripStartCoords = [position.coords.latitude, position.coords.longitude]
     });
     let d = new Date().getTime();
+    $('#trip-id').html(d);
     setTimeout(() => {
         socket.emit('new-trip', [d, tripStartCoords, tripStartTime, tripDOW]);
     }, 5000);

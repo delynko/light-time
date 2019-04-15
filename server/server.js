@@ -42,6 +42,7 @@ const tripData = mongoose.model('tripData', tripSchema);
 module.exports = lightTime;
 module.exports = tripData;
 
+#TODO Put 'curl' functions in '/data' request
 let allTripData;
 curl.get(`https://api.mlab.com/api/1/databases/traffic-light-time/collections/tripdatas?apiKey=${process.env.MLAB_API_KEY}`, (err, res, body) => {
     allTripData = body;
@@ -69,6 +70,7 @@ app.get('/dashboard', (req, res) => {
     res.render('dashboard.hbs');
 });
 
+#TODO make variables global
 io.on('connection', (socket) => {
     console.log('connected');
 

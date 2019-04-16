@@ -42,7 +42,11 @@ const tripData = mongoose.model('tripData', tripSchema);
 module.exports = lightTime;
 module.exports = tripData;
 
-
+let tripId;
+let tripStartTime;
+let tripStartCoords;
+let tripEndCoords;
+let tripDOW;
 
 app.use(express.static(path.join(__dirname, '../public')));
 
@@ -75,12 +79,6 @@ app.get('/dashboard', (req, res) => {
 
 io.on('connection', (socket) => {
     console.log('connected');
-
-    let tripId;
-    let tripStartTime;
-    let tripStartCoords;
-    let tripEndCoords;
-    let tripDOW;
 
     socket.on('new-trip', (d) => {
         tripId = d[0]

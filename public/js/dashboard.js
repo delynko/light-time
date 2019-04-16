@@ -18,5 +18,5 @@ fetch('/data')
                             Total time driving: ${(tripDuration / 60).toFixed(2)} minutes<br>
                             Total number of red lights stopped at: ${lightData.length}<br>
                             Time spent stopped at red lights: ${(lightDuration / 60).toFixed(2)} minutes`)
-        }, 1000);
+        }, 5000);
     });

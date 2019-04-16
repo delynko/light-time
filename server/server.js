@@ -42,15 +42,7 @@ const tripData = mongoose.model('tripData', tripSchema);
 module.exports = lightTime;
 module.exports = tripData;
 
-let allTripData;
-curl.get(`https://api.mlab.com/api/1/databases/traffic-light-time/collections/tripdatas?apiKey=${process.env.MLAB_API_KEY}`, (err, res, body) => {
-    allTripData = body;
-});
 
-let allLightData;
-curl.get(`https://api.mlab.com/api/1/databases/traffic-light-time/collections/lighttimes?apiKey=${process.env.MLAB_API_KEY}`, (err, res, body) => {
-    allLightData = body;
-});
 
 app.use(express.static(path.join(__dirname, '../public')));
 
@@ -62,7 +54,19 @@ app.get('/', (req, res) => {
 });
 
 app.get('/data', (req, res) => {
-    res.send([allTripData, allLightData]);
+    let allTripData;
+    curl.get(`https://api.mlab.com/api/1/databases/traffic-light-time/collections/tripdatas?apiKey=${process.env.MLAB_API_KEY}`, (err, res, body) => {
+        allTripData = body;
+    });
+
+    let allLightData;
+    curl.get(`https://api.mlab.com/api/1/databases/traffic-light-time/collections/lighttimes?apiKey=${process.env.MLAB_API_KEY}`, (err, res, body) => {
+        allLightData = body;
+    });
+    setTimeout(() => {
+        res.send([allTripData, allLightData]);
+    }, 3000)
+    
 });
 
 app.get('/dashboard', (req, res) => {

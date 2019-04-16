@@ -76,9 +76,10 @@ const trip = () => {
         tripStartCoords = [position.coords.latitude, position.coords.longitude]
     });
     let d = new Date().getTime();
+    let tripDate = new Date().toLocaleString("en-US", {timeZone: "America/Denver"});
     $('#trip-id').html(d);
     setTimeout(() => {
-        socket.emit('new-trip', [d, tripStartCoords, tripStartTime, tripDOW]);
+        socket.emit('new-trip', [d, tripStartCoords, tripStartTime, tripDOW, tripDate]);
     }, 5000);
 }
 

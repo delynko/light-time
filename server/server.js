@@ -47,6 +47,7 @@ let tripStartTime;
 let tripStartCoords;
 let tripEndCoords;
 let tripDOW;
+let tripDate;
 
 app.use(express.static(path.join(__dirname, '../public')));
 
@@ -85,6 +86,7 @@ io.on('connection', (socket) => {
         tripStartCoords = d[1];
         tripStartTime = d[2];
         tripDOW = d[3];
+        tripDate = d[4];
     });
 
     socket.on('lightData', (stopData) => {
@@ -107,7 +109,7 @@ io.on('connection', (socket) => {
         tripDur = endData[1]
         let trip = new tripData({
             type: 'trip',
-            date: tripStartTime,
+            date: tripDate,
             tripid: tripId,
             dow: tripDOW,
             duration: tripDur,

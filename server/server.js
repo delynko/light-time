@@ -78,6 +78,10 @@ app.get('/dashboard', (req, res) => {
     res.render('dashboard.hbs');
 });
 
+app.get('/map', (req, res) => {
+    res.render('map.hbs');
+});
+
 io.on('connection', (socket) => {
     console.log('connected');
 

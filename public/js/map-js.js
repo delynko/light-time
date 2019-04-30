@@ -16,7 +16,8 @@ fetch('/data')
             console.log(e);
             L.marker([e.latitude, e.longitude])
             .bindPopup(`Date: ${e.date}<br>
-                        Duration: ${e.duration}`)
+                        Duration: ${e.duration}<br>
+                        Direction: ${e.direction}`)
             .addTo(map);
 
         });
